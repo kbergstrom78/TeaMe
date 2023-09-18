@@ -6,9 +6,9 @@
 
 #### Create a New Subscription
 
-```http
+`http
   POST api/v1/customers/:customer_id/teas/:tea_id/subscribe'
-```
+`
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
@@ -16,6 +16,9 @@
 | `price` | `float`  |  Subscription price |
 | `status` | `string` | Subscription status |
 | `frequency` | `string` | Subscription frequency |
+
+<br>
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
