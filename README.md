@@ -2,7 +2,7 @@
 ![image](https://github.com/kbergstrom78/TeaMe/assets/124642113/97e67f83-683a-48de-b290-48bcf8dd95c9)
 
 
-## API Reference
+## API Endpoints
 
 #### Create a New Subscription
 
