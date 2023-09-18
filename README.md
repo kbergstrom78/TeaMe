@@ -1,5 +1,8 @@
 # README
-![image](https://github.com/kbergstrom78/TeaMe/assets/124642113/97e67f83-683a-48de-b290-48bcf8dd95c9)
+
+## Schema 
+![image](https://github.com/kbergstrom78/TeaMe/assets/124642113/aa72089d-cc4e-4691-9100-e48d51852e55)
+
 
 
 ## API Endpoints
