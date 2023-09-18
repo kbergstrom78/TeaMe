@@ -16,6 +16,14 @@
           null
         ]
       },
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/models/tea.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
       "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/models/subscription.rb": {
         "lines": [
           1,
@@ -25,15 +33,47 @@
           null
         ]
       },
-      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/models/subscription_tea.rb": {
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/api/v1/subscriptions_controller.rb": {
         "lines": [
           1,
+          null,
+          null,
           1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/application_controller.rb": {
+        "lines": [
           1,
           null
         ]
       },
-      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/models/tea.rb": {
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/models/subscription_tea.rb": {
         "lines": [
           1,
           1,
@@ -61,18 +101,10 @@
         "branches": {
         }
       },
-      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/application_controller.rb": {
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/api/v1/customers_controller.rb": {
         "lines": [
           0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/customers_controller.rb": {
-        "lines": [
-          0,
-          0,
+          null,
           null,
           null,
           0,
@@ -86,37 +118,7 @@
           0,
           0,
           null,
-          null,
           0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          null,
           null,
           0,
           0,
@@ -126,64 +128,7 @@
         "branches": {
         }
       },
-      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/subscriptions_controller.rb": {
-        "lines": [
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/teas_controller.rb": {
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/api/v1/teas_controller.rb": {
         "lines": [
           0,
           0,
@@ -262,8 +207,38 @@
         ],
         "branches": {
         }
+      },
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/serializers/customer_serializer.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/serializers/subscription_serializer.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/serializers/tea_serializer.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
       }
     },
-    "timestamp": 1695066204
+    "timestamp": 1695071090
   }
 }

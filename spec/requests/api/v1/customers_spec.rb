@@ -22,13 +22,4 @@ RSpec.describe "/customers", type: :request do
       end
     end
   end
-
-
-  # describe "GET /show" do
-  #   it "renders a successful response" do
-  #     customer = Customer.create! valid_attributes
-  #     get customer_url(customer), as: :json
-  #     expect(response).to be_successful
-  #   end
-  # end
 end

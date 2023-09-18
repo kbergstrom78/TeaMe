@@ -4,4 +4,20 @@
 # Examples:
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+SubscriptionTea.destroy_all
+Subscription.destroy_all
+Tea.destroy_all
+Customer.destroy_all
+
+10.times do
+  FactoryBot.create(:customer)
+end
+
+5.times do
+  FactoryBot.create(:tea)
+end
+
+Customer.all.each do |customer|
+  subscription = FactoryBot.create(:subscription, customer: customer)
+  subscription.teas << Tea.order(Arel.sql('RANDOM()')).limit(Faker::Number.between(from: 1, to: 3))
+end
