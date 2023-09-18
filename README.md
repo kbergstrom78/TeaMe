@@ -7,7 +7,7 @@
 #### Create a New Subscription
 
 `http
-  POST api/v1/customers/:customer_id/teas/:tea_id/subscribe'
+  POST api/v1/customers/:customer_id/teas/:tea_id/subscribe
 `
 
 | Parameter | Type     | Description                |
