@@ -9,7 +9,7 @@ module Api::V1::Customers
       @subscription.teas << tea
 
       if @subscription.save
-        render json: @subscription, status: :created
+        render json: SubscriptionSerializer.new(@subscription), status: :created
       else
         render json: @subscription.errors, status: :unprocessable_entity
       end
@@ -22,6 +22,11 @@ module Api::V1::Customers
       else
         render json: { error: 'Failed to delete subscription' }, status: :unprocessable_entity
       end
+    end
+
+    def index
+      subscriptions = @customer.subscriptions
+      render json: SubscriptionSerializer.new(subscriptions).serializable_hash.to_json
     end
 
     private
