@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Subscription < ApplicationRecord
   before_destroy :remove_subscription_teas
 
@@ -11,6 +13,6 @@ class Subscription < ApplicationRecord
   private
 
   def remove_subscription_teas
-    self.teas.clear
+    teas.clear
   end
 end

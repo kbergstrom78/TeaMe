@@ -1,42 +1,47 @@
-module Api::V1::Customers
-  class SubscriptionsController < ApplicationController
+# frozen_string_literal: true
 
-    before_action :set_customer
+module Api
+  module V1
+    module Customers
+      class SubscriptionsController < ApplicationController
+        before_action :set_customer
 
-    def create
-      tea = Tea.find(params[:tea_id])
-      @subscription = @customer.subscriptions.new(subscription_params)
-      @subscription.teas << tea
+        def create
+          tea = Tea.find(params[:tea_id])
+          @subscription = @customer.subscriptions.new(subscription_params)
+          @subscription.teas << tea
 
-      if @subscription.save
-        render json: SubscriptionSerializer.new(@subscription), status: :created
-      else
-        render json: @subscription.errors, status: :unprocessable_entity
+          if @subscription.save
+            render json: SubscriptionSerializer.new(@subscription), status: :created
+          else
+            render json: @subscription.errors, status: :unprocessable_entity
+          end
+        end
+
+        def destroy
+          @subscription = @customer.subscriptions.find_by_id(params[:id])
+          if @subscription&.destroy
+            render json: { message: 'Subscription deleted successfully' }, status: :ok
+          else
+            render json: { error: 'Failed to delete subscription' }, status: :unprocessable_entity
+          end
+        end
+
+        def index
+          subscriptions = @customer.subscriptions
+          render json: SubscriptionSerializer.new(subscriptions).serializable_hash.to_json
+        end
+
+        private
+
+        def set_customer
+          @customer = Customer.find(params[:customer_id])
+        end
+
+        def subscription_params
+          params.require(:subscription).permit(:title, :price, :status, :frequency)
+        end
       end
     end
-
-    def destroy
-      @subscription = @customer.subscriptions.find_by_id(params[:id])
-      if @subscription&.destroy
-        render json: { message: 'Subscription deleted successfully' }, status: :ok
-      else
-        render json: { error: 'Failed to delete subscription' }, status: :unprocessable_entity
-      end
-    end
-
-    def index
-      subscriptions = @customer.subscriptions
-      render json: SubscriptionSerializer.new(subscriptions).serializable_hash.to_json
-    end
-
-    private
-
-      def set_customer
-        @customer = Customer.find(params[:customer_id])
-      end
-
-      def subscription_params
-        params.require(:subscription).permit(:title, :price, :status, :frequency)
-      end
   end
 end
