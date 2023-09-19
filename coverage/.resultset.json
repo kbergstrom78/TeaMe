@@ -28,20 +28,27 @@
         "lines": [
           1,
           1,
+          null,
           1,
           1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          1,
+          null,
           null
         ]
       },
-      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/api/v1/subscriptions_controller.rb": {
+      "/Users/kimbergstrom/Turing/4mod/projects/tea_me/TeaMe/app/controllers/api/v1/customers/subscriptions_controller.rb": {
         "lines": [
           1,
-          null,
-          null,
-          1,
-          1,
           1,
           null,
+          1,
+          null,
+          1,
           1,
           1,
           1,
@@ -53,16 +60,24 @@
           null,
           null,
           null,
+          1,
+          1,
+          1,
+          1,
           null,
-          null,
-          null,
+          0,
           null,
           null,
           null,
           1,
           null,
           1,
+          2,
+          null,
+          null,
           1,
+          1,
+          null,
           null,
           null
         ]
@@ -239,6 +254,6 @@
         }
       }
     },
-    "timestamp": 1695071090
+    "timestamp": 1695154698
   }
 }
