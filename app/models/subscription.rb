@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Subscription < ApplicationRecord
   before_destroy :remove_subscription_teas
 
@@ -6,10 +8,11 @@ class Subscription < ApplicationRecord
   has_many :teas, through: :subscription_teas
 
   validates :status, inclusion: { in: %w[active cancelled] }
+  validates_presence_of :title, :price, :status, :frequency, :customer_id
 
   private
 
   def remove_subscription_teas
-    self.teas.clear
+    teas.clear
   end
 end
