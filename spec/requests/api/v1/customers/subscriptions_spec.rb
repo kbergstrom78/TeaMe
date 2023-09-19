@@ -12,7 +12,7 @@ RSpec.describe "/subscriptions", type: :request do
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
 
     before do
-      post api_v1_subscribe_to_tea_path(customer_id: customer.id, tea_id: tea.id), headers: headers, params: JSON.generate(subscription_params)
+      post api_v1_customer_subscriptions_path(customer_id: customer.id, tea_id: tea.id), headers: headers, params: JSON.generate(subscription_params)
     end
 
     it 'creates a subscription and returns successful response' do
@@ -46,12 +46,26 @@ RSpec.describe "/subscriptions", type: :request do
       subscription
       # require 'pry'; binding.pry
       expect {
-        delete api_v1_subscription_path(customer_id: subscription.customer_id, id: subscription.id)
+        delete api_v1_customer_subscription_path(customer_id: subscription.customer_id, id: subscription.id)
       }.to change(Subscription, :count).by(-1)
 
       expect(response).to be_successful
       expect(Subscription.find_by(id: subscription.id)).to be_nil
     end
   end
+
+  describe "GET /index" do
+    let(:customer) { FactoryBot.create(:customer) }
+    let!(:subscriptions) { FactoryBot.create_list(:subscription, 5, customer: customer) }
+
+    before do
+      get api_v1_customer_subscriptions_path(customer_id: customer.id)
+    end
+
+    it 'returns all the customer subscriptions' do
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['data'].size).to eq(5)    end
+  end
+
 
 end
