@@ -26,4 +26,32 @@ RSpec.describe "/subscriptions", type: :request do
       expect(new_subscription.customer_id).to eq(customer.id)
     end
   end
+
+  describe "DELETE /destroy" do
+    let(:customer) { FactoryBot.create(:customer) }
+    let(:tea) { FactoryBot.create(:tea) }
+    let(:subscription_params) {
+      attributes = FactoryBot.attributes_for(:subscription).except(:tea_id)  # Remove the tea_id attribute
+      attributes.merge({customer_id: customer.id})
+    }
+    let(:subscription) {
+      sub = Subscription.new(subscription_params)
+      sub.customer = customer
+      sub.teas << tea
+      sub.save!
+      sub
+    }
+
+    it 'deletes a subscription and returns successful response' do
+      subscription
+      # require 'pry'; binding.pry
+      expect {
+        delete api_v1_subscription_path(customer_id: subscription.customer_id, id: subscription.id)
+      }.to change(Subscription, :count).by(-1)
+
+      expect(response).to be_successful
+      expect(Subscription.find_by(id: subscription.id)).to be_nil
+    end
+  end
+
 end
