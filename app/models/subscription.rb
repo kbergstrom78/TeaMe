@@ -6,6 +6,7 @@ class Subscription < ApplicationRecord
   has_many :teas, through: :subscription_teas
 
   validates :status, inclusion: { in: %w[active cancelled] }
+  validates_presence_of :title, :price, :status, :frequency, :customer_id
 
   private
 
