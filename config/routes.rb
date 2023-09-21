@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :customers do
         scope module: 'customers' do
-          resources :subscriptions, only: %i[create destroy index]
+          resources :subscriptions, only: %i[create update index]
         end
       end
     end
