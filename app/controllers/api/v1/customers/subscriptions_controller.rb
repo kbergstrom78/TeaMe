@@ -5,6 +5,7 @@ module Api
     module Customers
       class SubscriptionsController < ApplicationController
         before_action :set_customer
+        before_action :set_subscription, only: [:update]
 
         def create
           tea = Tea.find_by_id(params[:tea_id])
@@ -21,13 +22,12 @@ module Api
         end
 
         def update
-          @subscription = @customer.subscriptions.find_by_id(params[:id])
-          return render json: { error: 'Subscription not found' }, status: :not_found unless @subscription
-
-          if subscription_params[:status] == 'cancelled'
-            handle_cancel_subscription and return
+          if @subscription.nil?
+            render json: { error: 'Subscription not found' }, status: :not_found
+          elsif handle_status_update
+            render json: { message: 'Status updated successfully' }, status: :ok
           else
-            render json: { error: 'Invalid status update' }, status: :unprocessable_entity and return
+            render json: { error: 'Unable to update status' }, status: :unprocessable_entity
           end
         end
 
@@ -42,11 +42,16 @@ module Api
           @customer = Customer.find(params[:customer_id])
         end
 
-        def handle_cancel_subscription
-          if @subscription.cancel
-            render json: { message: 'Subscription cancelled successfully' }, status: :ok
+        def set_subscription
+          @subscription = @customer.subscriptions.find_by_id(params[:id])
+        end
+
+        def handle_status_update
+          case subscription_params[:status]
+          when 'cancelled'
+            @subscription.cancel
           else
-            render json: { error: 'Unable to cancel subscription' }, status: :unprocessable_entity
+            false
           end
         end
 
