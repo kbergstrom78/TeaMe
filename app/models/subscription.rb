@@ -10,6 +10,14 @@ class Subscription < ApplicationRecord
   validates :status, inclusion: { in: %w[active cancelled] }
   validates_presence_of :title, :price, :status, :frequency, :customer_id
 
+  def active?
+    status == 'active'
+  end
+
+  def cancelled?
+    status == 'cancelled'
+  end
+
   private
 
   def remove_subscription_teas

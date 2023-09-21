@@ -16,4 +16,39 @@ RSpec.describe Subscription, type: :model do
     it { should validate_presence_of(:frequency) }
     it { should validate_presence_of(:customer_id) }
   end
+
+  describe '#cancelled?' do
+  let(:subscription) { FactoryBot.create(:subscription, status: status) }
+
+    context 'when status is cancelled' do
+      let(:status) { 'cancelled' }
+
+      it 'returns true' do
+        expect(subscription.cancelled?).to be(true)
+      end
+    end
+
+    context 'when status is not cancelled' do
+      let(:status) { 'active' }
+
+      it 'returns false' do
+        expect(subscription.cancelled?).to be(false)
+      end
+    end
+  end
+
+  describe '#remove_subscription_teas' do
+    let(:subscription) { FactoryBot.create(:subscription) }
+    let(:tea) { FactoryBot.create(:tea) }
+
+    before do
+      subscription.teas << tea
+    end
+
+    it 'clears the teas from the subscription upon destroy' do
+      subscription.destroy
+      expect(subscription.teas.reload).to be_empty
+    end
+  end
 end
+

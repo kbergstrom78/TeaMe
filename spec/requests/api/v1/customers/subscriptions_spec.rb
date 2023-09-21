@@ -14,8 +14,7 @@ RSpec.describe '/subscriptions', type: :request do
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
 
     before do
-      post api_v1_customer_subscriptions_path(customer_id: customer.id, tea_id: tea.id), headers:,
-                                                                                         params: JSON.generate(subscription_params)
+      post api_v1_customer_subscriptions_path(customer_id: customer.id, tea_id: tea.id), headers: headers, params: JSON.generate(subscription_params)
     end
 
     it 'creates a subscription and returns successful response' do
@@ -24,14 +23,14 @@ RSpec.describe '/subscriptions', type: :request do
       expect(response).to be_successful
       expect(new_subscription.title).to eq(subscription_params[:title])
       expect(new_subscription.price).to eq(subscription_params[:price])
-      expect(new_subscription.status).to eq(subscription_params[:status])
+      expect(new_subscription.status).to eq('active')
       expect(new_subscription.frequency).to eq(subscription_params[:frequency])
       expect(new_subscription.customer_id).to eq(customer.id)
     end
   end
 
   context 'when creating a subscription fails' do
-    let(:customer) { FactoryBot.create(:customer) } # Define the customer variable
+    let(:customer) { FactoryBot.create(:customer) }
     let(:tea) { FactoryBot.create(:tea) }
     let(:invalid_subscription_params) do
       {
@@ -49,45 +48,31 @@ RSpec.describe '/subscriptions', type: :request do
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
 
     it 'returns unprocessable_entity status with errors' do
-      post api_v1_customer_subscriptions_path(customer_id: customer.id, tea_id: tea.id), headers:,
-                                                                                         params: invalid_subscription_params.to_json
+      post api_v1_customer_subscriptions_path(customer_id: customer.id, tea_id: tea.id), headers: headers, params: JSON.generate(invalid_subscription_params)
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 
-  describe 'DELETE /destroy' do
+  describe 'PATCH /update' do
     let(:customer) { FactoryBot.create(:customer) }
-    let(:tea) { FactoryBot.create(:tea) }
-    let(:subscription_params) do
-      attributes = FactoryBot.attributes_for(:subscription).except(:tea_id) # Remove the tea_id attribute
-      attributes.merge({ customer_id: customer.id })
-    end
-    let(:subscription) do
-      Subscription.create!(
-        customer:,
-        title: subscription_params[:title],
-        price: subscription_params[:price],
-        status: subscription_params[:status],
-        frequency: subscription_params[:frequency],
-        teas: [tea]
-      )
-    end
+    let(:active_subscription) { FactoryBot.create(:subscription, status: 'active', customer: customer) }
 
-    it 'deletes a subscription and returns successful response' do
-      subscription
-
-      expect do
-        delete api_v1_customer_subscription_path(customer_id: subscription.customer_id, id: subscription.id)
-      end.to change(Subscription, :count).by(-1)
+    it 'cancels an active subscription and returns successful response' do
+      patch api_v1_customer_subscription_path(customer_id: active_subscription.customer_id, id: active_subscription.id), params: { subscription: { status: 'cancelled' } }
 
       expect(response).to be_successful
-      expect(Subscription.find_by(id: subscription.id)).to be_nil
+      active_subscription.reload
+      expect(active_subscription.status).to eq('cancelled')
     end
 
-    context 'when deleting a subscription fails' do
+    context 'when canceling a subscription fails' do
+      let(:subscription) { FactoryBot.create(:subscription, customer: customer, status: 'active') }
+      let(:update_params) { { subscription: { status: 'cancelled' } } }
+      let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
+
       before do
-        allow_any_instance_of(Subscription).to receive(:destroy).and_return(false)
-        delete api_v1_customer_subscription_path(customer_id: customer.id, id: subscription.id)
+        allow_any_instance_of(Subscription).to receive(:update).and_return(false)
+        patch api_v1_customer_subscription_path(customer_id: customer.id, id: subscription.id), headers: headers, params: JSON.generate(update_params)
       end
 
       it 'returns unprocessable_entity status with error message' do

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Api
   module V1
     module Customers
@@ -7,23 +5,35 @@ module Api
         before_action :set_customer
 
         def create
-          tea = Tea.find(params[:tea_id])
-          @subscription = @customer.subscriptions.new(subscription_params)
-          @subscription.teas << tea
+          # require 'pry'; binding.pry
+          tea = Tea.find_by_id(params[:tea_id])
+          return render json: { error: 'Tea not found' }, status: :not_found unless tea
 
-          if @subscription.save
-            render json: SubscriptionSerializer.new(@subscription), status: :created
+          subscription = @customer.subscriptions.new(subscription_params)
+
+          if subscription.save
+            subscription.teas << tea
+            render json: { message: 'Subscription created successfully', subscription: subscription }, status: :created
           else
-            render json: @subscription.errors, status: :unprocessable_entity
+            render json: { errors: subscription.errors.full_messages }, status: :unprocessable_entity
           end
         end
 
-        def destroy
+        def update
           @subscription = @customer.subscriptions.find_by_id(params[:id])
-          if @subscription&.destroy
-            render json: { message: 'Subscription deleted successfully' }, status: :ok
-          else
-            render json: { error: 'Failed to delete subscription' }, status: :unprocessable_entity
+
+          if @subscription
+            if @subscription.active? && subscription_params[:status] == 'cancelled'
+              if @subscription.update(status: 'cancelled')
+                render json: { message: 'Subscription cancelled successfully' }, status: :ok
+              else
+                render json: { error: 'Unable to cancel subscription' }, status: :unprocessable_entity
+              end
+            elsif !@subscription.active? && subscription_params[:status] == 'cancelled'
+              render json: { error: 'Only active subscriptions can be canceled' }, status: :unprocessable_entity
+            else
+              render json: { error: 'Invalid status update' }, status: :unprocessable_entity
+            end
           end
         end
 
