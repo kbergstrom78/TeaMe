@@ -19,8 +19,8 @@ RSpec.describe 'Customer Subscriptions API', type: :request do
 
     before do
       post "/api/v1/customers/#{customer.id}/subscriptions?tea_id=#{tea.id}",
-        headers: headers,
-        params: JSON.generate({ subscription: subscription_params })
+           headers:,
+           params: JSON.generate({ subscription: subscription_params })
     end
 
     it 'creates a subscription and returns successful response' do
@@ -51,16 +51,18 @@ RSpec.describe 'Customer Subscriptions API', type: :request do
     end
 
     it 'returns unprocessable_entity status with errors' do
-      post api_v1_customer_subscriptions_path(customer_id: customer.id, tea_id: tea.id), headers: headers, params: JSON.generate(invalid_subscription_params)
+      post api_v1_customer_subscriptions_path(customer_id: customer.id, tea_id: tea.id), headers:,
+                                                                                         params: JSON.generate(invalid_subscription_params)
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 
   describe 'PATCH /update' do
-    let(:active_subscription) { FactoryBot.create(:subscription, status: 'active', customer: customer) }
+    let(:active_subscription) { FactoryBot.create(:subscription, status: 'active', customer:) }
 
     it 'cancels an active subscription and returns successful response' do
-      patch api_v1_customer_subscription_path(customer_id: active_subscription.customer_id, id: active_subscription.id), params: { subscription: { status: 'cancelled' } }
+      patch api_v1_customer_subscription_path(customer_id: active_subscription.customer_id, id: active_subscription.id),
+            params: { subscription: { status: 'cancelled' } }
 
       expect(response).to be_successful
       active_subscription.reload
@@ -69,12 +71,13 @@ RSpec.describe 'Customer Subscriptions API', type: :request do
   end
 
   context 'when canceling a subscription fails' do
-    let(:subscription) { FactoryBot.create(:subscription, customer: customer, status: 'active') }
+    let(:subscription) { FactoryBot.create(:subscription, customer:, status: 'active') }
     let(:update_params) { { subscription: { status: 'cancelled' } } }
 
     before do
       allow_any_instance_of(Subscription).to receive(:update).and_return(false)
-      patch api_v1_customer_subscription_path(customer_id: customer.id, id: subscription.id), headers: headers, params: JSON.generate(update_params)
+      patch api_v1_customer_subscription_path(customer_id: customer.id, id: subscription.id), headers:,
+                                                                                              params: JSON.generate(update_params)
     end
 
     it 'returns unprocessable_entity status with error message' do
@@ -84,7 +87,7 @@ RSpec.describe 'Customer Subscriptions API', type: :request do
   end
 
   context 'when updating subscription with invalid status' do
-    let(:subscription) { FactoryBot.create(:subscription, customer: customer, status: 'active') }
+    let(:subscription) { FactoryBot.create(:subscription, customer:, status: 'active') }
     let(:invalid_params) do
       {
         subscription: {
@@ -94,14 +97,15 @@ RSpec.describe 'Customer Subscriptions API', type: :request do
     end
 
     it 'returns 422 Unprocessable Entity' do
-      patch api_v1_customer_subscription_path(customer_id: customer.id, id: subscription.id), headers: headers, params: JSON.generate(invalid_params)
+      patch api_v1_customer_subscription_path(customer_id: customer.id, id: subscription.id), headers:,
+                                                                                              params: JSON.generate(invalid_params)
       expect(response).to have_http_status(:unprocessable_entity)
       expect(JSON.parse(response.body)['error']).to eq('Invalid status update')
     end
   end
 
   describe 'GET /index' do
-    let!(:subscriptions) { FactoryBot.create_list(:subscription, 5, customer: customer) }
+    let!(:subscriptions) { FactoryBot.create_list(:subscription, 5, customer:) }
 
     before do
       get api_v1_customer_subscriptions_path(customer_id: customer.id)

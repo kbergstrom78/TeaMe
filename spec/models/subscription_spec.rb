@@ -18,7 +18,7 @@ RSpec.describe Subscription, type: :model do
   end
 
   describe '#cancel?' do
-  let(:subscription) { FactoryBot.create(:subscription, status: status) }
+    let(:subscription) { FactoryBot.create(:subscription, status:) }
 
     context 'when status is cancelled' do
       let(:status) { 'cancelled' }
@@ -51,4 +51,3 @@ RSpec.describe Subscription, type: :model do
     end
   end
 end
-

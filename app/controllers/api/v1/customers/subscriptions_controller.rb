@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     module Customers
@@ -12,7 +14,7 @@ module Api
 
           if subscription.save
             subscription.teas << tea
-            render json: { message: 'Subscription created successfully', subscription: subscription }, status: :created
+            render json: { message: 'Subscription created successfully', subscription: }, status: :created
           else
             render json: { errors: subscription.errors.full_messages }, status: :unprocessable_entity
           end
