@@ -14,8 +14,10 @@ class Subscription < ApplicationRecord
     status == 'active'
   end
 
-  def cancelled?
-    status == 'cancelled'
+  def cancel
+    return false unless active?
+
+    update(status: 'cancelled')
   end
 
   private
