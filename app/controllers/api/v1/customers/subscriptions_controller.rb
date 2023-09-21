@@ -28,7 +28,7 @@ module Api
             render json: { error: 'Invalid status update' }, status: :unprocessable_entity and return
           end
         end
-        
+
         def index
           subscriptions = @customer.subscriptions
           render json: SubscriptionSerializer.new(subscriptions).serializable_hash.to_json
