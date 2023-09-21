@@ -17,14 +17,14 @@ RSpec.describe Subscription, type: :model do
     it { should validate_presence_of(:customer_id) }
   end
 
-  describe '#cancelled?' do
+  describe '#cancel?' do
   let(:subscription) { FactoryBot.create(:subscription, status: status) }
 
     context 'when status is cancelled' do
       let(:status) { 'cancelled' }
 
       it 'returns true' do
-        expect(subscription.cancelled?).to be(true)
+        expect(subscription.active?).to be(false)
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Subscription, type: :model do
       let(:status) { 'active' }
 
       it 'returns false' do
-        expect(subscription.cancelled?).to be(false)
+        expect(subscription.active?).to be(true)
       end
     end
   end

@@ -7,14 +7,20 @@ RSpec.describe '/subscriptions', type: :request do
     let(:customer) { FactoryBot.create(:customer) }
     let(:tea) { FactoryBot.create(:tea) }
     let(:subscription_params) do
-      attributes = FactoryBot.attributes_for(:subscription)
-      attributes.merge({ customer_id: customer.id, tea_id: tea.id })
+      {
+        title: 'Chamomile Tea',
+        price: 20.0,
+        status: 'active',
+        frequency: 'monthly'
+      }
     end
 
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
 
     before do
-      post api_v1_customer_subscriptions_path(customer_id: customer.id, tea_id: tea.id), headers: headers, params: JSON.generate(subscription_params)
+      post "/api/v1/customers/#{customer.id}/subscriptions",
+        headers: headers,
+        params: JSON.generate({ subscription: subscription_params, tea_id: tea.id })
     end
 
     it 'creates a subscription and returns successful response' do
